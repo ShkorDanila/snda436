@@ -1,0 +1,22 @@
+.mainWrapper {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  
+  .formPageLink {
+    all: unset;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: lightgray;
+    padding: 1rem;
+    border-radius: 0.3rem;
+  
+    &:hover {
+      background-color: gray;
+      color: lightgray;
+    };
+    &:active {
+      border: 2px solid black;
+    };
+  }
+  

@@ -1,0 +1,30 @@
+.formWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    height: 100%;
+}
+
+form {
+    border: 2px solid black;
+    border-radius: 0.3rem;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.submitButton {
+    padding: 0.1rem 0.4rem 0.1rem 0.4rem;
+    width: min-content;
+    place-self: center;
+    grid-column: span 2;
+}
+
+.customFormWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-height: 80vh;
+    overflow-y: auto;
+}
