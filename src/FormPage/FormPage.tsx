@@ -9,8 +9,10 @@ export const FormPage = (): ReactElement => {
         e.preventDefault()
         setCustomFormElements([<></>].concat(
             Array.from({length: e.currentTarget.inputCount.value}, (_, i) => <input id={`input-${i}`} placeholder="input"></input>),
-            Array.from({length: e.currentTarget.textareaCount.value}, (_, i) => <textarea id={`textarea-${i}`} placeholder="input"></textarea>),
-            Array.from({length: e.currentTarget.checkboxCount.value}, (_, i) => <input id={`checkbox-${i}`} type="checkbox" value={"Checkbox"}></input>))
+            Array.from({length: e.currentTarget.textareaCount.value}, (_, i) => <textarea id={`textarea-${i}`} placeholder="Text Area"></textarea>),
+            Array.from({length: e.currentTarget.checkboxCount.value}, (_, i) => 
+           <div> <input id={`checkbox-${i}`} type="checkbox"></input> <label>Checkbox</label></div>
+        ))
          )
     }
 
