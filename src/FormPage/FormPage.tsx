@@ -1,39 +1,84 @@
-import { ReactElement, SyntheticEvent, useState } from "react";
+import { ReactElement, SyntheticEvent, useRef, useState } from "react";
 import "./FormPage.css";
+import { FormInput } from "../components/FormInput/FormInput";
+import Multiplier from "../components/Multiplier/Multiplier";
+import { FormTextarea } from "../components/FormTextarea/FormTextarea";
+import { FormCheckbox } from "../components/FormCheckbox/FormCheckbox";
+import { Link } from "react-router-dom";
 
 export const FormPage = (): ReactElement => {
+  const [isGeneratable, setIsGeneratable] = useState<boolean>(false);
+  const [_, update] = useState<boolean>(false);
 
-    const [customFormElements, setCustomFormElements] = useState([<></>])
-
-    const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setCustomFormElements([<></>].concat(
-            Array.from({length: e.currentTarget.inputCount.value}, (_, i) => <input id={`input-${i}`} placeholder="input"></input>),
-            Array.from({length: e.currentTarget.textareaCount.value}, (_, i) => <textarea id={`textarea-${i}`} placeholder="Text Area"></textarea>),
-            Array.from({length: e.currentTarget.checkboxCount.value}, (_, i) => 
-           <div> <input id={`checkbox-${i}`} type="checkbox"></input> <label>Checkbox</label></div>
-        ))
-         )
+  const handleOnSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (
+      Number(inputRef.current?.value) |
+      Number(checkboxRef.current?.value) |
+      Number(textareaRef.current?.value)
+    ) {
+      setIsGeneratable(true);
+      update((prev) => !prev);
+      return;
     }
+    alert("Fill at least one field with valid data");
+  };
 
-    return (
-        <div className="formWrapper">
-            <form onSubmit={handleSubmit}>
-                <label>Input</label>
-                <input min={0} type="number" name="inputCount" placeholder="Count"></input>
+  const inputRef = useRef<HTMLInputElement>(null);
+  const checkboxRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLInputElement>(null);
 
-                <label>Text Area</label>
-                <input min={0} type="number" name="textareaCount" placeholder="Count"></input>
+  return (
+    <div className='formPageWrapper'>
+      <div className='formWrapper' onSubmit={handleOnSubmit}>
+        <form>
+          <FormInput
+            ref={inputRef}
+            label='Inputs'
+            placeholder='count'
+            type='number'
+          />
+          <FormInput
+            ref={checkboxRef}
+            label='Text areas'
+            placeholder='count'
+            type='number'
+          />
+          <FormInput
+            ref={textareaRef}
+            label='Checkboxes'
+            placeholder='count'
+            type='number'
+          />
 
-                <label>Checkbox</label>
-                <input min={0} type="number" name="checkboxCount" placeholder="Count"></input>
-
-                <button className="submitButton">Build</button>
-            </form>
-            <form className="customFormWrapper">
-                {customFormElements}
-            </form>
-        </div>
-    )
-}
-
+          <button className='submitButton'>Build</button>
+        </form>
+        {isGeneratable && (
+          <form className='customFormWrapper'>
+            <Multiplier
+              count={Number(inputRef.current?.value)}
+              keyPrefix='inputElement'
+            >
+              <FormInput label='Input' />
+            </Multiplier>
+            <Multiplier
+              count={Number(checkboxRef.current?.value)}
+              keyPrefix='textareaElement'
+            >
+              <FormTextarea label='Text Area' />
+            </Multiplier>
+            <Multiplier
+              count={Number(textareaRef.current?.value)}
+              keyPrefix='checkboxElement'
+            >
+              <FormCheckbox label='Checkbox' />
+            </Multiplier>
+          </form>
+        )}
+      </div>
+      <Link to={"/"} className='mainPageLink'>
+        Home
+      </Link>
+    </div>
+  );
+};
